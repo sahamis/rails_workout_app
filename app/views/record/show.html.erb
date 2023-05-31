@@ -1,0 +1,7 @@
+<%= @string_date %>
+<%= @date %>
+<% if @message %>
+  <%= @message%>
+<% end %>
+
+<%= link_to("新規登録","/record/#{@date}/new")%>

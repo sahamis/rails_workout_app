@@ -1,0 +1,18 @@
+<div class="main records-new">
+  <div class="container">
+    <h2>新規投稿</h2>
+    <%= form_tag("/record/#{@date}/create") do %>
+      <div class="form">
+        <div class="form-body">
+          <p>種目名</p>
+          <input name="name">
+          <p>重量</p>
+          <input name="weight">
+          <p>回数</p>
+          <input name="repetitions">
+          <input type="submit" value="登録">
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

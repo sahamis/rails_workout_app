@@ -1,0 +1,2 @@
+class WorkoutDate < ApplicationRecord
+end
