@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   get '/' => "home#top"
   
   get "signup" => "users#new"
+  post "users/create" => "users#create"
+  get "login" => "users#login_form"
+  post "login" => "users#login"
 
   get "record/index" => "record#index"
   get "record/:date/new" => "record#new"

@@ -11,12 +11,14 @@ class RecordController < ApplicationController
 
   def create
     @date=Date.parse(params[:date])
-    @workoutdate=WorkoutDate.find_by(date:@date)
-    if @workoutdate == nil
-       @workoutdate=WorkoutDate.new(date:@date)
-       @workoutdate.save
+    if WorkoutDate.find_by(date:@date)
+      @workoutdate=WorkoutDate.find_by(date:@date)
+    else
+      @workoutdate=WorkoutDate.new(date:@date)
+      @workoutdate.save
     end
     @set=WorkoutSet.new(
+      user_id:@current_user.id,
       workout_id:Workout.find_by(name:params[:name]).id,
       date_id:@workoutdate.id,
       weight:params[:weight],
