@@ -28,4 +28,9 @@ class UsersController < ApplicationController
       render("users/login_form",status: :unprocessable_entity)
     end
   end
+
+  def logout
+    session[:user_id]=nil
+    redirect_to("/record/index")
+  end
 end

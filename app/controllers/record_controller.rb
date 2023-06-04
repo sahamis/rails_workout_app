@@ -2,11 +2,12 @@ require 'date'
 
 class RecordController < ApplicationController
   def index
-    @sets=WorkoutSet.all
+    @dates=WorkoutDate.all
   end
 
   def new
     @date=params[:date]
+    @workout=Workout.find_by(id:params[:id])
   end
 
   def create
@@ -19,13 +20,13 @@ class RecordController < ApplicationController
     end
     @set=WorkoutSet.new(
       user_id:@current_user.id,
-      workout_id:Workout.find_by(name:params[:name]).id,
+      workout_id:Workout.find_by(name:params[:workout_name]).id,
       date_id:@workoutdate.id,
       weight:params[:weight],
       repetitions:params[:repetitions]
     )
     @set.save
-    redirect_to("/record/index")
+    redirect_to("/record/#{@date}")
   end
 
   def workout
@@ -38,13 +39,17 @@ class RecordController < ApplicationController
   end
 
   def show
-    @string_date=params[:date]
     @date=Date.parse(params[:date])
     @workoutdate=WorkoutDate.find_by(date:@date)
     if @workoutdate
-       @workoutsets=WorkoutSet.where(date_id:@workoutdate.id)
+       @sets=WorkoutSet.where(date_id:@workoutdate.id)
     else
       @message="種目が登録されていません"
     end
+  end
+
+  def choose_workout
+    @workouts=Workout.all
+    @date=params[:date]
   end
 end

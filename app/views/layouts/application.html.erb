@@ -11,9 +11,37 @@
   </head>
 
   <body>
-    <% if @current_user %>
-      <%= @current_user.name %>
-    <% end %>
+    <header>
+      <div class="header-logo">
+        <%= link_to("Workout Record","/") %>
+      </div>
+      
+      <ul class="header-menus">
+        <% if @current_user %>
+          <li>
+            <%= @current_user.name %>
+          </li>
+          <li>
+            <%= link_to("記録一覧","/record/index") %>
+          </li>
+          <li>
+            <%= link_to("種目登録","/record/workout") %>
+          </li>
+          <li>
+            <%= link_to("ログアウト","/logout",data:{"turbo-method": :post}) %>
+          </li>
+        <% else%>
+          <li>
+            <%= link_to("ログイン","/login") %>
+          </li>
+          <li>
+            <%= link_to("新規登録","/signup") %>
+          </li>
+        <% end %>
+      </ul>
+
+    </header>
+
     <%= yield %>
   </body>
 </html>

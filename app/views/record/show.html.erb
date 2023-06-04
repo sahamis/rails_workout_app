@@ -1,7 +1,12 @@
-<%= @string_date %>
 <%= @date %>
+
+<% @sets.each do|set| %>
+  <p><%= Workout.find_by(id:set.workout_id).name %>
+  <p><%= set.weight %></p>
+  <p><%= set.repetitions %></p>
+<% end %>
 <% if @message %>
   <%= @message%>
 <% end %>
 
-<%= link_to("新規登録","/record/#{@date}/new")%>
+<%= link_to("新規登録","/record/#{@date}/new/0")%>

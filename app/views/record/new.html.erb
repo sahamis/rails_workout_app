@@ -4,8 +4,13 @@
     <%= form_tag("/record/#{@date}/create") do %>
       <div class="form">
         <div class="form-body">
-          <p>種目名</p>
-          <input name="name">
+          <% if @workout %>
+            <p>種目名</p>
+            <input readonly name="workout_name" value="<%= @workout.name %>">
+            <%= link_to("種目を変更する","/record/#{@date}/choose_workout") %>
+          <% else %>
+            <%= link_to("種目を選択","/record/#{@date}/choose_workout") %>
+          <% end %>
           <p>重量</p>
           <input name="weight">
           <p>回数</p>

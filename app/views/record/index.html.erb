@@ -1,1 +1,3 @@
-<%= @sets %>
+<% @dates.each do|date| %>
+  <%= link_to("#{date.date}","/record/#{date.date}") %>
+<% end %>

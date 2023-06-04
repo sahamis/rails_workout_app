@@ -1,0 +1,3 @@
+<% @workouts.each do |workout| %>
+  <%= link_to(workout.name,"/record/#{@date}/new/#{workout.id}")%>
+<% end %>
