@@ -11,10 +11,13 @@
           <% else %>
             <%= link_to("種目を選択","/record/#{@date}/choose_workout") %>
           <% end %>
-          <p>重量</p>
-          <input name="weight">
-          <p>回数</p>
-          <input name="repetitions">
+          <% for count in 1..5 do %>
+            <p><%= count %> セット目</p>
+            <p>重量</p>
+            <input name="<%= "weight_#{count}" %>">
+            <p>回数</p>
+            <input name="<%= "repetitions_#{count}" %>">
+          <% end %>
           <input type="submit" value="登録">
         </div>
       </div>

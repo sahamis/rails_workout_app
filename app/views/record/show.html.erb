@@ -1,12 +1,25 @@
-<%= @date %>
+<div class="main records-show">
+  <div class="container">
+    <div class="records-show-item">
+      <div class="records-date">
+       <h2><%= @date %></h2>
+      </div>
+      <div class="records-item">
+        <% if @workout_date %>
+          <% @workout_id.each do|workout_id| %>
+            <p><%= Workout.find_by(id:workout_id).name %>
+            <% @workout_sets["workout_#{workout_id}"].each do|workout_set| %>
+              <p><%= "#{@workout_sets["workout_#{workout_id}"].index(workout_set)+1}セット目" %>
+              <p><%= "#{workout_set.weight}kg" %></p>
+              <p><%= "#{workout_set.repetitions}回" %></p>
+            <% end %>
+            <%= link_to("編集","/record/#{@workout_date.id}/edit/#{workout_id}") %>
+            <%= link_to("削除","/record/#{@workout_date.id}/destroy/#{workout_id}",data:{"turbo-method": :post}) %>
+          <% end %>
+        <% end %>
 
-<% @sets.each do|set| %>
-  <p><%= Workout.find_by(id:set.workout_id).name %>
-  <p><%= set.weight %></p>
-  <p><%= set.repetitions %></p>
-<% end %>
 <% if @message %>
-  <%= @message%>
+  <p><%= @message%></p>
 <% end %>
 
-<%= link_to("新規登録","/record/#{@date}/new/0")%>
+<p><%= link_to("新規登録","/record/#{@date}/new/0")%></p>

@@ -1,0 +1,31 @@
+<div class="main records-edit">
+  <div class="container">
+    <h1>編集</h1>
+    <%= form_tag("/record/#{@workout_sets[0].date_id}/update/#{@workout_sets[0].workout_id}") do %>
+      <div class="form">
+        <div class="form-body">
+          <h2><%= @workout %></h2>
+          <% for count in 0..4 do %>
+            <p><%= count+1 %> セット目</p>
+            <% if @workout_sets[count] %>
+              <p>重量</p>
+              <input name="<%= "weight_#{count}" %>" value="<%= @workout_sets[count].weight %>">
+              <p>回数</p>
+              <input name="<%= "repetitions_#{count}" %>" value="<%= @workout_sets[count].repetitions %>">
+            <% else %>
+              <p>重量</p>
+              <input name="<%= "weight_#{count}" %>">
+              <p>回数</p>
+              <input name="<%= "repetitions_#{count}" %>">
+            <% end %>
+          <% end %>
+          <input type="submit" value="登録">
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%if @error %>
+  <%= @error %>
+<% end %>
