@@ -25,7 +25,13 @@
             <%= link_to("記録一覧","/record/index/#{@this_month}") %>
           </li>
           <li>
-            <%= link_to("種目登録","/workouts/new") %>
+            <%= link_to("種目分析","/categories/index") %>
+          </li>
+          <li>
+            <%= link_to("種目登録","/workouts/new/0") %>
+          </li>
+          <li>
+            <%= link_to("カテゴリー登録","/categories/new") %>
           </li>
           <li>
             <%= link_to("ログアウト","/logout",data:{"turbo-method": :post}) %>

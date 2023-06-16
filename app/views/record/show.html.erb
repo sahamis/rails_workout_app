@@ -6,10 +6,12 @@
       </div>
       <div class="records-item">
         <% if @workout_date %>
+          <!-- その日の種目idごとに繰り返し処理 -->
           <% @workout_id.each do|workout_id| %>
             <p><%= Workout.find_by(id:workout_id).name %>
+            <!-- 取り出した種目idに付随するセットを１つずつ表示 -->
             <% @workout_sets["workout_#{workout_id}"].each do|workout_set| %>
-              <p><%= "#{@workout_sets["workout_#{workout_id}"].index(workout_set)+1}セット目" %>
+              <p><%= "#{workout_set.set_count}セット目" %>
               <p><%= "#{workout_set.weight}kg" %></p>
               <p><%= "#{workout_set.repetitions}回" %></p>
             <% end %>

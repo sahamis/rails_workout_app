@@ -1,11 +1,19 @@
-<div class="main workout-new">
+<div class="main workouts-new">
   <div class="container">
     <h2>新規種目登録</h2>
     <%= form_tag("/workouts/create") do %>
       <div class="form">
        <div class="form-body">
-         <p>種目名</p>
-         <input name="name">
+        <p>種目名</p>
+        <input name="name">
+        <% if @category %>
+          <p>部位</p>
+          <input readonly name="category_name" value="<%= @category.name %>">
+          <%= link_to("部位を変更する","/workouts/choose_category") %>
+        <% else %>
+          <%= link_to("部位を選択","/workouts/choose_category") %>
+        <% end %>
+
          <input type="submit" value="登録">
         </div>
       </div>

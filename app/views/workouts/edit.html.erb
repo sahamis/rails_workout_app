@@ -1,0 +1,12 @@
+<h2>編集</h2>
+<%= form_tag("/workouts/#{@workout.id}/update") do %>
+  <p>種目名</p>
+  <input name="workout_name" value="<%= @workout.name %>">
+  <p>部位</p>
+  <% if @workout_category %>
+    <input name="workout_category" value="<%= @workout_category.name %>">
+  <% else %>
+    <input name="workout_category">
+  <% end %>
+  <input type="submit" value="保存">
+<% end %>

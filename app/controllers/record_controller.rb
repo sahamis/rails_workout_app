@@ -1,6 +1,7 @@
 require 'date'
 
 class RecordController < ApplicationController
+
   def index
     @record_month=Date.strptime(params[:month],"%Y-%m")
     start_date=@record_month.at_beginning_of_month
@@ -31,7 +32,8 @@ class RecordController < ApplicationController
           workout_id:Workout.find_by(name:params[:workout_name]).id,
           date_id:@workoutdate.id,
           weight:weight_param,
-          repetitions:repetitions_param
+          repetitions:repetitions_param,
+          set_count:count
           )
         @set.save
       end
@@ -39,14 +41,19 @@ class RecordController < ApplicationController
     redirect_to("/record/#{@date}")
   end
 
+  #セットの表示の順番が明示されていないため、要改善
   def show
     @date=Date.strptime(params[:date],"%Y-%m-%d")
     @workout_date=WorkoutDate.find_by(date:@date)
+    #指定した日に記録が存在する場合の処理
     if @workout_date
+      #その日のセットの記録を取り出す
       @sets_date=WorkoutSet.where(date_id:@workout_date.id)
+      #種目idのみを取り出す
       @workout_id=@sets_date.distinct.pluck(:workout_id)
       @workout_sets={}
       @workout_id.each do|workout_id|
+        #種目idをキーに持つその種目のセットの配列をバリューとするハッシュを作成
         @workout_sets["workout_#{workout_id}"]=@sets_date.where(workout_id:workout_id)
       end
     else
@@ -90,7 +97,8 @@ class RecordController < ApplicationController
             workout_id:params[:workout_id],
             date_id:params[:date_id],
             weight:weight_param,
-            repetitions:repetitions_param
+            repetitions:repetitions_param,
+            set_count:count+1
             )
           new_workout_set.save
         elsif weight_param.present? || repetitions_param.present? 

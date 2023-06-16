@@ -1,0 +1,16 @@
+<h2><%= @workout.name %></h2>
+<%= link_to("編集","/workouts/#{@workout.id}/edit") %>
+<% if @workout_sets.present? %>
+  <% @dates.each do|date| %>
+    <h3><%= date.date %></h3>
+    <%= link_to("編集","/workouts/#{@workout.id}/sets_edit/#{date.id}") %>
+    <% @date_sets["date_#{date.id}"].each do|set| %>
+      <p><%= "#{set.set_count}セット目" %></p>
+      <p><%= "#{set.weight}kg" %></p>
+      <p><%= "#{set.repetitions}回" %></p>
+    <% end %>
+  <% end %>
+<% else %>
+  <p>記録がありません</p>
+<% end %>
+

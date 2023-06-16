@@ -1,3 +1,7 @@
+<h2><%= @record_month.strftime("%m") %>月</h2>
 <% @dates.each do|date| %>
-  <%= link_to("#{date.date}","/record/#{date.date}") %>
+  <p><%= link_to("#{date.strftime("%d")}日","/record/#{date}") %></p>
 <% end %>
+
+<%= link_to("前の月","/record/index/#{(@record_month<<1).strftime("%Y-%m")}") %>
+<%= link_to("次の月","/record/index/#{(@record_month>>1).strftime("%Y-%m")}") %>

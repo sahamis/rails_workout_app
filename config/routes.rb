@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   get '/' => "home#top"
   
   get "signup" => "users#new"
@@ -16,6 +17,17 @@ Rails.application.routes.draw do
   post "record/:date_id/update/:workout_id" => "record#update"
   post "record/:date_id/destroy/:workout_id" => "record#destroy"
 
-  get "workouts/new" => "workouts#new"
+  get "workouts/new/:category_id" => "workouts#new"
   post "workouts/create" => "workouts#create"
+  get "workouts/choose_category" => "workouts#choose_category"
+  get "workouts/:workout_id" => "workouts#show"
+  get "workouts/:workout_id/edit" => "workouts#edit"
+  post "workouts/:workout_id/update" => "workouts#update"
+  get "workouts/:workout_id/sets_edit/:date_id" => "workouts#sets_edit"
+  post "workouts/:workout_id/sets_update/:date_id" => "workouts#sets_update"
+
+  get 'categories/new' => "categories#new"
+  post "categories/create" => "categories#create"
+  get "categories/index" => "categories#index"
+  get "categories/:category_id" => "categories#show"
 end
