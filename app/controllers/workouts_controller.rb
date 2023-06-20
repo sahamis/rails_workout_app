@@ -46,7 +46,15 @@ class WorkoutsController < ApplicationController
   end
 
   def sets_update
-    @workout_sets=WorkoutSet.where(workout_id:params[:workout_id],date_id:params[:date_id])
+    @date=WorkoutDate.find_by(id:params[:date_id])
+    @workout=Workout.find_by(id:params[:workout_id])
+    @workout_sets=WorkoutSet.where(workout_id:@workout.id,date_id:@date_id)
+
+    unless params[:weight_0].present? && params[:repetitions_0].present?
+      @error="eeee"
+      render("workouts/sets_edit",status: :unprocessable_entity) and return
+    end
+
     for count in 0..4 do
       weight_param=params[:"weight_#{count}"]
       repetitions_param=params[:"repetitions_#{count}"]

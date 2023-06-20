@@ -15,6 +15,10 @@ class RecordController < ApplicationController
   end
 
   def create
+    unless params[:weight_1].present? && params[:repetitions_1].present?
+      render("record/new",status: :unprocessable_entity) and return
+    end
+
     @date=Date.parse(params[:date])
     if WorkoutDate.find_by(date:@date)
       @workoutdate=WorkoutDate.find_by(date:@date)
@@ -72,7 +76,14 @@ class RecordController < ApplicationController
   end
 
   def update
+    @date=WorkoutDate.find_by(id:params[:date_id]).date
     @workout_sets=WorkoutSet.where(workout_id:params[:workout_id],date_id:params[:date_id])
+
+    unless params[:weight_0].present? && params[:repetitions_0].present?
+      @error="eeee"
+      render("record/edit",status: :unprocessable_entity) and return
+    end
+
     for count in 0..4 do
       weight_param=params[:"weight_#{count}"]
       repetitions_param=params[:"repetitions_#{count}"]
@@ -107,7 +118,6 @@ class RecordController < ApplicationController
         end
       end
     end
-    @date=WorkoutDate.find_by(id:params[:date_id]).date
     redirect_to("/record/#{@date}")
   end
 
