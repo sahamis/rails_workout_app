@@ -1,0 +1,5 @@
+<% @routines.each do|routine| %>
+  <%= link_to(routine.name,"/routines/#{routine.id}") %>
+<% end %>
+
+<%= link_to("ルーティンを作成","/routines/new") %>

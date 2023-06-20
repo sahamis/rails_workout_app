@@ -1,0 +1,6 @@
+<h2>メニュー情報を編集</h2>
+<%= form_tag("/menus/#{@menu.id}/update") do %>
+  <p>メニュー名</p>
+  <input name="menu_name" value="<%= @menu.name %>">
+  <input type="submit" value="登録">
+<% end %>

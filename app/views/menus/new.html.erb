@@ -1,0 +1,6 @@
+<h2>メニューを新規登録</h2>
+<%= form_tag("/menus/#{@routine.id}/create") do %>
+  <p>メニュー名</p>
+  <input name="name">
+  <input type="submit" value="登録">
+<% end %>

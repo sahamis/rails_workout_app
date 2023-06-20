@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+ 
   get '/' => "home#top"
   
   get "signup" => "users#new"
@@ -30,4 +30,25 @@ Rails.application.routes.draw do
   post "categories/create" => "categories#create"
   get "categories/index" => "categories#index"
   get "categories/:category_id" => "categories#show"
+
+  get 'routines/index' => "routines#index"
+  get "routines/new" => "routines#new"
+  post "routines/create" => "routines#create"
+  get "routines/:routine_id" => "routines#show"
+  get "routines/:routine_id/edit" => "routines#edit"
+  post "routines/:routine_id/update" => "routines#update"
+  post "routines/:routine_id/destroy" => "routines#destroy"
+
+  get 'menus/:routine_id/new' => "menus#new"
+  post "menus/:routine_id/create" => "menus#create"
+  get "menus/:menu_id" => "menus#show"
+  get "menus/:menu_id/edit" => "menus#edit"
+  post "menus/:menu_id/update" => "menus#update"
+  post "menus/:menu_id/destroy" => "menus#destroy"
+
+  get "menuworkouts/:menu_id/new/:workout_id" => "menuworkouts#new"
+  get "menuworkouts/:menu_id/choose_workout" => "menuworkouts#choose_workout"
+  post "menuworkouts/:menu_id/create" => "menuworkouts#create"
+  post "menuworkouts/:menu_id/destroy/:workout_id" => "menuworkouts#destroy"
+  
 end

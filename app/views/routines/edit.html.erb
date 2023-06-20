@@ -1,0 +1,6 @@
+<h2>ルーティンを編集</h2>
+<%= form_tag("/routines/#{@routine.id}/update") do %>
+  <p>ルーティン名</p>
+  <input name="routine_name" value="<%= @routine.name %>">
+  <input type="submit" value="編集を保存">
+<% end %>

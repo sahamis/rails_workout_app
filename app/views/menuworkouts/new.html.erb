@@ -1,0 +1,12 @@
+<h2>種目を追加</h2>
+  <%= form_tag("/menuworkouts/#{@menu.id}/create") do %>
+    <% if @workout %>
+      <p>種目名</p>
+      <p><input readonly name="workout_name" value="<%= @workout.name %>"></p>
+      <p><%= link_to("種目を変更する","/menuworkouts/#{@menu.id}/choose_workout") %></p>
+    <% else %>
+      <p><%= link_to("種目を選択","/menuworkouts/#{@menu.id}/choose_workout") %></p>
+    <% end %>
+    <input type="submit" value="追加" >
+  <% end %>
+      

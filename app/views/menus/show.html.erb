@@ -1,0 +1,8 @@
+<h2><%= @menu.name %></h2>
+<%= link_to("編集","/menus/#{@menu.id}/edit") %>
+<%= link_to("削除","/menus/#{@menu.id}/destroy",data:{"turbo-method": :post}) %>
+
+<% @workouts.each do|workout|%>
+  <p><%= link_to(workout.name,"/workouts/#{workout.id}") %>  <%= link_to("削除","/menuworkouts/#{@menu.id}/destroy/#{workout.id}",data:{"turbo-method": :post}) %></p>
+<% end%>
+<%= link_to("種目を追加","/menuworkouts/#{@menu.id}/new/0") %>

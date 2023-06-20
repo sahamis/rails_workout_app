@@ -1,0 +1,8 @@
+<h2><%= @routine.name %></h2>
+<%= link_to("編集","/routines/#{@routine.id}/edit") %>
+<%= link_to("削除","/routines/#{@routine.id}/destroy",data:{"turbo-method": :post}) %>
+
+<% @menus.each do|menu| %>
+  <p><%= link_to(menu.name,"/menus/#{menu.id}") %></p>
+<% end %>
+<%= link_to("メニューを追加","/menus/#{@routine.id}/new") %>
