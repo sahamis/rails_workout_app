@@ -4,8 +4,15 @@
     <%= form_tag("/record/#{@date}/create") do %>
       <div class="form">
         <div class="form-body">
+
+          <% if @error_message %>
+            <div class="error_message">
+              <%= @error_message %>
+            </div>
+          <% end %>
+
+          <p>種目名</p>
           <% if @workout %>
-            <p>種目名</p>
             <input readonly name="workout_name" value="<%= @workout.name %>">
             <%= link_to("種目を変更する","/record/#{@date}/choose_workout") %>
           <% else %>

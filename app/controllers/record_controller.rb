@@ -15,11 +15,19 @@ class RecordController < ApplicationController
   end
 
   def create
-    unless params[:weight_1].present? && params[:repetitions_1].present?
+    @date=Date.parse(params[:date])
+    @workout=Workout.find_by(name:params[:workout_name])
+    #ワークアウトが選択されてなかったときの処理
+    unless Workout.find_by(name:params[:workout_name])
+      @error_message="種目が選択されていません"
       render("record/new",status: :unprocessable_entity) and return
     end
-
-    @date=Date.parse(params[:date])
+    #１セット目のパラメータに入力がなかったときの処理
+    unless params[:weight_1].present? && params[:repetitions_1].present?
+      @error_message="1セット目は必ず入力してください"
+      render("record/new",status: :unprocessable_entity) and return
+    end
+    #日付のworkoutdateモデル内での存在の有無で処理を分岐
     if WorkoutDate.find_by(date:@date)
       @workoutdate=WorkoutDate.find_by(date:@date)
     else
@@ -30,18 +38,33 @@ class RecordController < ApplicationController
     for count in 1..5 do
       weight_param=params[:"weight_#{count}"]
       repetitions_param=params[:"repetitions_#{count}"] 
+      #weightフィールドとrepetitionsフィールドの両方に入力がある場合のみモデルを作成
       if weight_param.present? && repetitions_param.present? 
         @set=WorkoutSet.new(
           user_id:@current_user.id,
-          workout_id:Workout.find_by(name:params[:workout_name]).id,
+          workout_id:@workout.id,
           date_id:@workoutdate.id,
           weight:weight_param,
           repetitions:repetitions_param,
           set_count:count
           )
         @set.save
+      elsif weight_param.present? || repetitions_param.present? 
+        @error_message="重量と回数の両方を入力してください"
+        render("record/new",status: :unprocessable_entity) and return
+      else 
+        #空欄だったフィールド以降のフィールドに入力があるか確認している
+        for count in (count+1)..5 do
+          if params[:"weight_#{count}"].present? || params[:"repetitions_#{count}"].present?
+            @error_message="空欄のセット以降に値を入力しないでください"
+            render("record/new",status: :unprocessable_entity) and return
+          end
+        end
+        flash[:notice]="記録が登録されました"
+        redirect_to("/record/#{@date}") and return
       end
     end
+    flash[:notice]="記録が登録されました"
     redirect_to("/record/#{@date}")
   end
 
@@ -78,9 +101,9 @@ class RecordController < ApplicationController
   def update
     @date=WorkoutDate.find_by(id:params[:date_id]).date
     @workout_sets=WorkoutSet.where(workout_id:params[:workout_id],date_id:params[:date_id])
-
-    unless params[:weight_0].present? && params[:repetitions_0].present?
-      @error="eeee"
+    #１セット目のパラメータに入力がなかったときの処理
+    unless params[:weight_0].present? || params[:repetitions_0].present?
+      @error_message="1セット目は必ず入力してください"
       render("record/edit",status: :unprocessable_entity) and return
     end
 
@@ -95,10 +118,23 @@ class RecordController < ApplicationController
           workout_set.repetitions=repetitions_param
           workout_set.save
         elsif weight_param.present? || repetitions_param.present? 
-          @error="エラー1です"
+          @error_message="重量と回数の両方を入力してください"
           render("record/edit",status: :unprocessable_entity) and return
         else 
-          workout_set.destroy
+          #空欄だったフィールド以降のフィールドに入力があるか確認している
+          for count_p in (count+1)..4 do
+            if params[:"weight_#{count_p}"].present? || params[:"repetitions_#{count_p}"].present?
+              @error_message="空欄のセット以降に値を入力しないでください"
+              render("record/edit",status: :unprocessable_entity) and return
+            end
+          end
+          @workout_sets[count..4].each do|workout_set_p|
+            if workout_set_p.present?
+              workout_set_p.destroy
+            end
+          end
+          flash[:notice]="編集内容を登録しました"
+          redirect_to("/record/#{@date}") and return
         end
       #WorkoutSetが存在しない場合の処理
       else
@@ -113,11 +149,22 @@ class RecordController < ApplicationController
             )
           new_workout_set.save
         elsif weight_param.present? || repetitions_param.present? 
-          @error="エラー2です"
+          @error_message="重量と回数の両方を入力してください"
           render("record/edit",status: :unprocessable_entity) and return
+        else
+          #空欄だったフィールド以降のフィールドに入力があるか確認している
+          for count_p in (count+1)..4 do
+            if params[:"weight_#{count_p}"].present? || params[:"repetitions_#{count_p}"].present?
+              @error_message="空欄のセット以降に値を入力しないでください"
+              render("record/edit",status: :unprocessable_entity) and return
+            end
+          end
+          flash[:notice]="編集内容を登録しました"
+          redirect_to("/record/#{@date}") and return
         end
       end
     end
+    flash[:notice]="編集内容を登録しました"
     redirect_to("/record/#{@date}")
   end
 
@@ -125,6 +172,7 @@ class RecordController < ApplicationController
     @workout_sets=WorkoutSet.where(workout_id:params[:workout_id],date_id:params[:date_id])
     @workout_sets.destroy_all
     @date=WorkoutDate.find_by(id:params[:date_id]).date
+    flash[:notice]="記録を削除しました"
     redirect_to("/record/#{@date}")
   end
 end

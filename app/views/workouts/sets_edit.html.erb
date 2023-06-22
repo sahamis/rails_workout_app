@@ -1,6 +1,13 @@
 <h1 >記録を編集</h1>
 <h2><%= @date.date %></h2>
 <%= form_tag("/workouts/#{@workout.id}/sets_update/#{@date.id}") do %>
+  
+  <% if @error_message %>
+    <div class="error_message">
+      <%= @error_message %>
+    </div>
+  <% end %>
+  
   <% for count in 0..4 do %>
     <p><%= count+1 %> セット目</p>
     <% if @workout_sets[count] %>

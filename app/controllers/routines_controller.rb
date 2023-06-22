@@ -9,6 +9,7 @@ class RoutinesController < ApplicationController
   def create
     @routine=Routine.new(name:params[:name])
     @routine.save
+    flash[:notice]="新規計画を登録しました"
     redirect_to("/routines/index")
   end
 
@@ -25,12 +26,14 @@ class RoutinesController < ApplicationController
     @routine=Routine.find_by(id:params[:routine_id])
     @routine.name=params[:routine_name]
     @routine.save
+    flash[:notice]="編集内容を登録しました"
     redirect_to("/routines/#{@routine.id}")
   end 
 
   def destroy
     @routine=Routine.find_by(id:params[:routine_id])
     @routine.destroy
+    flash[:notice]="計画を削除しました"
     redirect_to("/routines/index")
   end
 end

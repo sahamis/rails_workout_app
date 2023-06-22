@@ -4,6 +4,13 @@
     <%= form_tag("/record/#{@workout_sets[0].date_id}/update/#{@workout_sets[0].workout_id}") do %>
       <div class="form">
         <div class="form-body">
+          
+          <% if @error_message %>
+            <div class="error_message">
+              <%= @error_message %>
+            </div>
+          <% end %>
+
           <h2><%= @workout %></h2>
           <% for count in 0..4 do %>
             <p><%= count+1 %> セット目</p>
@@ -26,6 +33,3 @@
   </div>
 </div>
 
-<%if @error %>
-  <%= @error %>
-<% end %>

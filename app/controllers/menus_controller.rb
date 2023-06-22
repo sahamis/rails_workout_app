@@ -6,6 +6,7 @@ class MenusController < ApplicationController
   def create
     @menu=Menu.new(name:params[:name],routine_id:params[:routine_id])
     @menu.save
+    flash[:notice]="新規メニューを登録しました"
     redirect_to("/routines/#{params[:routine_id]}")
   end
   
@@ -24,6 +25,7 @@ class MenusController < ApplicationController
     @menu=Menu.find_by(id:params[:menu_id])
     @menu.name=params[:menu_name]
     @menu.save
+    flash[:notice]="編集内容を登録しました"
     redirect_to("/menus/#{@menu.id}")
   end
 
@@ -31,6 +33,7 @@ class MenusController < ApplicationController
     @menu=Menu.find_by(id:params[:menu_id])
     @routine_id=@menu.routine_id
     @menu.destroy
+    flash[:notice]="メニューを削除しました"
     redirect_to("/routines/#{@routine_id}")
   end
 end
