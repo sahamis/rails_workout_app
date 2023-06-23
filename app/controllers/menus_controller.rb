@@ -1,4 +1,6 @@
 class MenusController < ApplicationController
+  before_action :authenticate_user 
+
   def new
     @routine=Routine.find_by(id:params[:routine_id])
   end

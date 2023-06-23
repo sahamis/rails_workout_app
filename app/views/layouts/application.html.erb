@@ -19,7 +19,10 @@
       <ul class="header-menus">
         <% if @current_user %>
           <li>
-            <%= @current_user.name %>
+            <%= link_to(@current_user.name,"/users/#{@current_user.id}") %>
+          </li>
+          <li>
+            <%= link_to("ユーザー一覧","/users/index") %>
           </li>
           <li>
             <%= link_to("記録一覧","/record/index/#{@this_month}") %>

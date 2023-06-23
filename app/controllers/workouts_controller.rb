@@ -1,4 +1,6 @@
 class WorkoutsController < ApplicationController
+  before_action :authenticate_user 
+  
   def new
     @category=Category.find_by(id:params[:category_id])
   end

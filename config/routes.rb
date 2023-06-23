@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   post "login" => "users#login"
   post "logout" => "users#logout"
 
+  get "users/index" => "users#index"
+  get "users/:user_id" => "users#show"
+  get "users/:user_id/edit" => "users#edit"
+  post "users/:user_id/update" => "users#update"
+  post "users/:user_id/destroy" => "users#destroy"
+
   get "record/index/:month" => "record#index"
   get "record/:date/new/:workout_id" => "record#new"
   post "record/:date/create" => "record#create"

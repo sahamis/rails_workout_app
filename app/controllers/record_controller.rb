@@ -1,6 +1,7 @@
 require 'date'
 
 class RecordController < ApplicationController
+  before_action :authenticate_user 
 
   def index
     @record_month=Date.strptime(params[:month],"%Y-%m")
@@ -54,8 +55,8 @@ class RecordController < ApplicationController
         render("record/new",status: :unprocessable_entity) and return
       else 
         #空欄だったフィールド以降のフィールドに入力があるか確認している
-        for count in (count+1)..5 do
-          if params[:"weight_#{count}"].present? || params[:"repetitions_#{count}"].present?
+        for count_p in (count+1)..5 do
+          if params[:"weight_#{count_p}"].present? || params[:"repetitions_#{count_p}"].present?
             @error_message="空欄のセット以降に値を入力しないでください"
             render("record/new",status: :unprocessable_entity) and return
           end
@@ -75,7 +76,7 @@ class RecordController < ApplicationController
     #指定した日に記録が存在する場合の処理
     if @workout_date
       #その日のセットの記録を取り出す
-      @sets_date=WorkoutSet.where(date_id:@workout_date.id)
+      @sets_date=WorkoutSet.where(date_id:@workout_date.id,user_id:@current_user.id)
       #種目idのみを取り出す
       @workout_id=@sets_date.distinct.pluck(:workout_id)
       @workout_sets={}

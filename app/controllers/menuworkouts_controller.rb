@@ -1,4 +1,5 @@
 class MenuworkoutsController < ApplicationController
+  before_action :authenticate_user 
   
   def new
     @menu=Menu.find_by(id:params[:menu_id])
