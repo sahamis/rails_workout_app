@@ -77,6 +77,10 @@ class RecordController < ApplicationController
     if @workout_date
       #その日のセットの記録を取り出す
       @sets_date=WorkoutSet.where(date_id:@workout_date.id,user_id:@current_user.id)
+      #workout_dateが存在し、workout_setが存在しない場合の処理
+      unless @sets_date.present?
+        @error_message="記録が登録されていません"
+      end
       #種目idのみを取り出す
       @workout_id=@sets_date.distinct.pluck(:workout_id)
       @workout_sets={}
@@ -85,13 +89,16 @@ class RecordController < ApplicationController
         @workout_sets["workout_#{workout_id}"]=@sets_date.where(workout_id:workout_id)
       end
     else
-      @message="種目が登録されていません"
+      @error_message="記録が登録されていません"
     end
   end
 
   def choose_workout
-    @workouts=Workout.all
+    @workouts=Workout.where(user_id:@current_user.id)
     @date=params[:date]
+    unless @workouts.present?
+      @error_message="種目が登録されていません"
+    end
   end
 
   def edit

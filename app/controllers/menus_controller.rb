@@ -2,14 +2,20 @@ class MenusController < ApplicationController
   before_action :authenticate_user 
 
   def new
+    @menu=Menu.new
     @routine=Routine.find_by(id:params[:routine_id])
   end
 
   def create
-    @menu=Menu.new(name:params[:name],routine_id:params[:routine_id])
-    @menu.save
-    flash[:notice]="新規メニューを登録しました"
-    redirect_to("/routines/#{params[:routine_id]}")
+    @routine=Routine.find_by(id:params[:routine_id])
+    @menu=Menu.new(name:params[:name],
+      routine_id:@routine.id)
+    if @menu.save
+      flash[:notice]="新規メニューを登録しました"
+      redirect_to("/routines/#{params[:routine_id]}")
+    else
+      render("menus/new",status: :unprocessable_entity)
+    end
   end
   
   def show
@@ -26,9 +32,12 @@ class MenusController < ApplicationController
   def update
     @menu=Menu.find_by(id:params[:menu_id])
     @menu.name=params[:menu_name]
-    @menu.save
-    flash[:notice]="編集内容を登録しました"
-    redirect_to("/menus/#{@menu.id}")
+    if @menu.save
+      flash[:notice]="編集内容を登録しました"
+      redirect_to("/menus/#{@menu.id}")
+    else
+      render("menus/edit",status: :unprocessable_entity)
+    end
   end
 
   def destroy

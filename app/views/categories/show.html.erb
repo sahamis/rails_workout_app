@@ -1,3 +1,14 @@
+<h2><%= @category.name %></h2>
+<p><%= link_to("編集","/categories/#{@category.id}/edit") %></p>
+
+<% if @error_message %>
+  <div class="error_message">
+    <%= @error_message %>
+  </div>
+<% end %>
+
 <% @category_workouts.each do|workout| %>
   <%= link_to(workout.name,"/workouts/#{workout.id}") %>
 <% end %>
+
+<p><%= link_to("種目を登録","/categories/#{@category.id}/new_workout/0") %></p>

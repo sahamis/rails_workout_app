@@ -20,8 +20,8 @@
           <% end %>
         <% end %>
 
-<% if @message %>
-  <p><%= @message%></p>
+<% if @error_message %>
+  <p><%= @error_message %></p>
 <% end %>
 
 <p><%= link_to("新規登録","/record/#{@date}/new/0")%></p>

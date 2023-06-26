@@ -1,3 +1,15 @@
-<% @categories.each do|category| %>
-  <%= link_to(category.name,"/workouts/new/#{category.id}") %>
+<% if @error_message %>
+  <div class="error_message">
+    <%= @error_message %>
+  </div>
 <% end %>
+
+<% @categories.each do|category| %>
+  <% if params[:workout_id]=="0" %>
+    <%= link_to(category.name,"/workouts/new/#{category.id}") %>
+  <% else %>
+    <%= link_to(category.name,"/workouts/#{params[:workout_id]}/edit/#{category.id}") %>
+  <% end %>
+<% end %>
+
+  <p><%= link_to("新規カテゴリー登録","/categories/new?workout_id=#{params[:workout_id]}") %></p>

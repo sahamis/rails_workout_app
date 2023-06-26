@@ -6,21 +6,40 @@ class WorkoutsController < ApplicationController
   end
 
   def create
+    @category=Category.find_by(name:params[:category_name],user_id:@current_user.id)
+    #カテゴリーが選択されていない場合の処理
+    unless @category
+      @error_message="カテゴリーが選択されていません"
+      render("workouts/new",status: :unprocessable_entity) and return
+    end
+
+    unless params[:name].present?
+      @error_message="種目名を入力してください"
+      render("workouts/new",status: :unprocessable_entity) and return
+    end
+
     @workout=Workout.new(
       name:params[:name],
-      category_id:Category.find_by(name:params[:category_name]).id)
-    @workout.save
-    flash[:notice]="新規種目を登録しました"
-    redirect_to("/record/index/#{@this_month}")
+      category_id:@category.id,
+      user_id:@current_user.id)
+    if @workout.save
+      flash[:notice]="新規種目を登録しました"
+      redirect_to("/record/index/#{@this_month}")
+    else
+      render("workouts/new",status: :unprocessable_entity)
+    end
   end
 
   def choose_category
-    @categories=Category.all
+    @categories=Category.where(user_id:@current_user.id)
+    unless @categories.present?
+      @error_message="カテゴリーが登録されていません"
+    end
   end
 
   def show
     @workout=Workout.find_by(id:params[:workout_id])
-    @workout_sets=WorkoutSet.where(workout_id:params[:workout_id])
+    @workout_sets=WorkoutSet.where(workout_id:@workout.id)
     @date_id=@workout_sets.distinct.pluck(:date_id)
     @dates=WorkoutDate.where(id:@date_id).sort_by{|date|date.date}.reverse
     @date_sets={}
@@ -31,13 +50,13 @@ class WorkoutsController < ApplicationController
 
   def edit
     @workout=Workout.find_by(id:params[:workout_id])
-    @workout_category=Category.find_by(id:@workout.category_id)
+    @workout_category=Category.find_by(id:params[:category_id])
   end
 
   def update
     @workout=Workout.find_by(id:params[:workout_id])
     @workout.name=params[:workout_name]
-    @workout.category_id=Category.find_by(name:params[:workout_category]).id
+    @workout.category_id=Category.find_by(name:params[:category_name],user_id:@current_user.id).id
     @workout.save
     flash[:notice]="編集内容を登録しました"
     redirect_to("/workouts/#{@workout.id}")

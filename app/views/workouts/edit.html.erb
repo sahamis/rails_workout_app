@@ -3,10 +3,7 @@
   <p>種目名</p>
   <input name="workout_name" value="<%= @workout.name %>">
   <p>部位</p>
-  <% if @workout_category %>
-    <input name="workout_category" value="<%= @workout_category.name %>">
-  <% else %>
-    <input name="workout_category">
-  <% end %>
+    <input readonly name="category_name" value="<%= @workout_category.name %>">
+    <%= link_to("部位を変更する","/workouts/#{@workout.id}/choose_category") %>
   <input type="submit" value="保存">
 <% end %>

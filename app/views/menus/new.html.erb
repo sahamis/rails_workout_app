@@ -1,6 +1,12 @@
 <h2>メニューを新規登録</h2>
 <%= form_tag("/menus/#{@routine.id}/create") do %>
+  <% @menu.errors.full_messages.each do|error_message| %>
+    <div class="error_message">
+      <%= error_message %>
+    </div>
+  <% end %>
+
   <p>メニュー名</p>
-  <input name="name">
+  <input name="name" value="<%= @menu.name%>">
   <input type="submit" value="登録">
 <% end %>

@@ -1,3 +1,12 @@
+<% if @error_message %>
+  <div class="error_message">
+    <%= @error_message %>
+  </div>
+  <p><%= link_to("新規種目登録","/workouts/new/0") %></p>
+<% end %>
+
 <% @categories.each do|category| %>
   <%= link_to(category.name,"/categories/#{category.id}") %>
 <% end %>
+
+<p><%= link_to("新規カテゴリー登録","/categories/new") %></p>

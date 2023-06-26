@@ -1,5 +1,11 @@
 <h2>メニュー情報を編集</h2>
 <%= form_tag("/menus/#{@menu.id}/update") do %>
+  <% @menu.errors.full_messages.each do|error_message| %>
+    <div class="error_message">
+      <%= error_message %>
+    </div>
+  <% end %>
+
   <p>メニュー名</p>
   <input name="menu_name" value="<%= @menu.name %>">
   <input type="submit" value="登録">

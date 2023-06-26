@@ -1,0 +1,12 @@
+<h2>カテゴリーを編集</h2>
+<%= form_tag("/categories/#{@category.id}/update") do %>
+  <% @category.errors.full_messages.each do|error_message| %>
+    <div class="error_message">
+      <%= error_message %>
+    </div>
+  <% end %>
+  
+  <p>カテゴリー名</p>
+  <input name="category_name" value="<%= @category.name%>">
+  <input type="submit" value="登録">
+<% end %>

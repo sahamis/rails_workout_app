@@ -25,9 +25,9 @@ Rails.application.routes.draw do
 
   get "workouts/new/:category_id" => "workouts#new"
   post "workouts/create" => "workouts#create"
-  get "workouts/choose_category" => "workouts#choose_category"
+  get "workouts/:workout_id/choose_category" => "workouts#choose_category"
   get "workouts/:workout_id" => "workouts#show"
-  get "workouts/:workout_id/edit" => "workouts#edit"
+  get "workouts/:workout_id/edit/:category_id" => "workouts#edit"
   post "workouts/:workout_id/update" => "workouts#update"
   get "workouts/:workout_id/sets_edit/:date_id" => "workouts#sets_edit"
   post "workouts/:workout_id/sets_update/:date_id" => "workouts#sets_update"
@@ -36,6 +36,10 @@ Rails.application.routes.draw do
   post "categories/create" => "categories#create"
   get "categories/index" => "categories#index"
   get "categories/:category_id" => "categories#show"
+  get "categories/:category_id/edit" => "categories#edit"
+  post "categories/:category_id/update" => "categories#update"
+  get "categories/:category_id/new_workout/:workout_id" => "categories#new_workout"
+  post "categories/:category_id/update_workout" => "categories#update_workout"
 
   get 'routines/index' => "routines#index"
   get "routines/new" => "routines#new"

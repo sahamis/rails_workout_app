@@ -1,5 +1,5 @@
 <h2><%= @workout.name %></h2>
-<%= link_to("編集","/workouts/#{@workout.id}/edit") %>
+<%= link_to("編集","/workouts/#{@workout.id}/edit/#{@workout.category_id}") %>
 <% if @workout_sets.present? %>
   <% @dates.each do|date| %>
     <h3><%= date.date %></h3>
