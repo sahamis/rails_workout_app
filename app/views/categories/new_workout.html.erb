@@ -1,5 +1,5 @@
 <h2>カテゴリーに種目を追加</h2>
-<%= form_tag("/categories/#{@category.id}/update_workout") do %>
+<%= form_tag("/categories/#{@category.id}/create_workout") do %>
   <% if @workout %>
     <input readonly name="workout_name" value="<%= @workout.name %>">
     <input type="submit" value="登録">

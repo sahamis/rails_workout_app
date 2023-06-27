@@ -1,7 +1,7 @@
 <div class="main records-new">
   <div class="container">
     <h2>新規投稿</h2>
-    <%= form_tag("/record/#{@date}/create") do %>
+    <%= form_tag("/record/#{@date}/create?workout_id=#{params[:workout_id]}") do %>
       <div class="form">
         <div class="form-body">
 

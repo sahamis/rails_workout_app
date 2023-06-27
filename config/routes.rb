@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get "categories/:category_id/edit" => "categories#edit"
   post "categories/:category_id/update" => "categories#update"
   get "categories/:category_id/new_workout/:workout_id" => "categories#new_workout"
-  post "categories/:category_id/update_workout" => "categories#update_workout"
+  post "categories/:category_id/create_workout" => "categories#create_workout"
 
   get 'routines/index' => "routines#index"
   get "routines/new" => "routines#new"

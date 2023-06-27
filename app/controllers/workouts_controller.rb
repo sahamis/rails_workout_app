@@ -1,8 +1,22 @@
 class WorkoutsController < ApplicationController
   before_action :authenticate_user 
-  
+  before_action :ensure_correct_user, {only:[:show,:edit,:update,:sets_edit,:sets_update]}
+
+  def ensure_correct_user
+    unless @current_user.id ==Workout.find_by(id:params[:workout_id]).user_id
+      flash[:notice]="権限がありません"
+      redirect_to("/categories/index")
+    end
+  end
+
   def new
     @category=Category.find_by(id:params[:category_id])
+    if @category
+      unless @current_user.id == @category.user_id
+        flash[:notice]="権限がありません"
+        redirect_to("/record/index/#{@this_month}")
+      end
+    end
   end
 
   def create

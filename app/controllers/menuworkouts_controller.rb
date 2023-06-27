@@ -1,5 +1,14 @@
 class MenuworkoutsController < ApplicationController
   before_action :authenticate_user 
+  before_action :ensure_correct_user
+
+  def ensure_correct_user
+    routine_id=Menu.find_by(id:params[:menu_id]).routine_id
+    unless @current_user.id == Routine.find_by(id:routine_id).user_id
+      flash[:notice]="権限がありません"
+      redirect_to("/routines/index")
+    end
+  end
   
   def new
     @menu=Menu.find_by(id:params[:menu_id])

@@ -1,5 +1,13 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user 
+  before_action :ensure_correct_user, {only:[:show,:edit,:update,:new_workout,:create_workout]}
+
+  def ensure_correct_user
+    unless @current_user.id == Category.find_by(id:params[:category_id]).user_id
+      flash[:notice]="権限がありません"
+      redirect_to("/categories/index")
+    end
+  end
 
   def new
     @category=Category.new
@@ -60,7 +68,7 @@ class CategoriesController < ApplicationController
     @workout=Workout.find_by(id:params[:workout_id])
   end
 
-  def update_workout
+  def create_workout
     @category=Category.find_by(id:params[:category_id])
     @workout=Workout.find_by(name:params[:workout_name],user_id:@current_user.id)
     @workout.category_id=@category.id

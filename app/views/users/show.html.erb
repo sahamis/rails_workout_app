@@ -4,3 +4,18 @@
   <%= link_to("編集","/users/#{@user.id}/edit") %>
   <%= link_to("削除","/users/#{@user.id}/destroy",data:{"turbo-method": :post}) %>
 <% end %>
+
+<h3>最近登録した記録</h3>
+<% @recent_workouts_sets.each do|workout_sets| %>
+  <h4><%= WorkoutDate.find_by(id:workout_sets[0].date_id).date %></h4>
+  <h5><%= Workout.find_by(id:workout_sets[0].workout_id).name %></h5>
+  <% workout_sets.each do|workout_set| %>
+    <p><%= "#{workout_set.set_count}セット目" %></p>
+    <p><%= "#{workout_set.weight}kg" %></p>
+    <p><%= "#{workout_set.repetitions}回" %></p>
+  <% end %>
+  <% if @current_user == @user %>
+    <%= link_to("編集","/record/#{workout_sets[0].date_id}/edit/#{workout_sets[0].workout_id}") %>
+  <% end %>
+<% end %>
+  

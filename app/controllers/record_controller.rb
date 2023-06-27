@@ -2,6 +2,16 @@ require 'date'
 
 class RecordController < ApplicationController
   before_action :authenticate_user 
+  before_action :ensure_correct_user, {only:[:new,:create,:edit,:update,:destroy]}
+
+  def ensure_correct_user
+    if Workout.find_by(id:params[:workout_id])
+      unless @current_user.id == Workout.find_by(id:params[:workout_id]).user_id
+        flash[:notice]="権限がありません"
+        redirect_to("/record/index/#{@this_month}")
+      end
+    end
+  end
 
   def index
     @record_month=Date.strptime(params[:month],"%Y-%m")

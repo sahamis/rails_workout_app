@@ -1,5 +1,14 @@
 class RoutinesController < ApplicationController
   before_action :authenticate_user 
+  before_action :ensure_correct_user, {only:[:show,:edit,:update,:destroy]}
+
+  def ensure_correct_user
+    unless @current_user.id == Routine.find_by(id:params[:routine_id]).user_id
+      flash[:notice]="権限がありません"
+      redirect_to("/routines/index")
+    end
+  end
+
   
   def index
     @routines=Routine.where(user_id:@current_user.id)
