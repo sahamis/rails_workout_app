@@ -61,4 +61,5 @@ Rails.application.routes.draw do
   post "menuworkouts/:menu_id/create" => "menuworkouts#create"
   post "menuworkouts/:menu_id/destroy/:workout_id" => "menuworkouts#destroy"
   
+  get "*unmatched_route" => "errors#not_found"
 end

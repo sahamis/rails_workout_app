@@ -38,12 +38,19 @@ class RecordController < ApplicationController
       @error_message="1セット目は必ず入力してください"
       render("record/new",status: :unprocessable_entity) and return
     end
+   
     #日付のworkoutdateモデル内での存在の有無で処理を分岐
     if WorkoutDate.find_by(date:@date)
       @workoutdate=WorkoutDate.find_by(date:@date)
     else
       @workoutdate=WorkoutDate.new(date:@date)
       @workoutdate.save
+    end
+
+    #同じ日に同じ種目の記録が存在した場合の処理
+    if WorkoutSet.find_by(workout_id:@workout.id,date_id:@workoutdate.id,user_id:@current_user.id)
+      @error_message="一日に同じ種目の記録を複数登録することはできません"
+      render("record/new",status: :unprocessable_entity) and return
     end
 
     for count in 1..5 do

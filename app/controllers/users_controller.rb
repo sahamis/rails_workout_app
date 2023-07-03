@@ -59,7 +59,13 @@ class UsersController < ApplicationController
     @user=User.find_by(id:params[:user_id])
     #記録を登録された順番で取り出し、登録された順番のworkout_idとdate_idを取得
     workout_sets=WorkoutSet.where(user_id:@user.id).order(id:"DESC")
-    recent_workouts_id=workout_sets.distinct.pluck(:workout_id,:date_id)[0..4]
+    recent_workouts_date = workout_sets.group(:id, :date_id).limit(25).pluck(:date_id)
+    recent_workouts_workout = workout_sets.group(:id, :workout_id).limit(25).pluck(:workout_id)
+    recent_workouts_ids=[]
+    for n in 0 ..(recent_workouts_date.length-1) do
+      recent_workouts_ids.push([recent_workouts_date[n],recent_workouts_workout[n]])
+    end
+    recent_workouts_id=recent_workouts_ids.uniq
     puts recent_workouts_id
     #recent_workouts_setsに登録された順番のセットを種目分けで格納
     @recent_workouts_sets=[]
